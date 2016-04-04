@@ -14,7 +14,7 @@ struct Pixel final
 public:
 
 	/** Floating-point precision to use. */
-	using PrecisionT = float;
+	using PrecisionT = double;
 
 	////////////////////////
 	///   Constructors   ///
@@ -95,7 +95,7 @@ public:
 
 	friend std::ostream& operator<<(std::ostream& stream, const Pixel& pixel)
 	{
-		stream << "{ " << pixel.R << ", " << pixel.G << ", " << pixel.B << " }";
+		stream << "{ R: " << pixel.R << ", G: " << pixel.G << ", B: " << pixel.B << " }";
 		return stream;
 	}
 };
@@ -179,6 +179,14 @@ int main(int argc, char* argv[])
 	// Unload image
 	FreeImage_Unload(image);
 
-	// Print the result
-	std::cout << "Standard deviation of image: " << standardDeviation << std::endl;
+	// Print the standard deviation
+	std::cout << "Standard deviation: " << standardDeviation << std::endl;
+
+	// Calculate homogeneity
+	auto homogeneity = standardDeviation.R + standardDeviation.G + standardDeviation.B;
+	homogeneity /= 3;
+	homogeneity = 1.0 - homogeneity;
+
+	// Print the homogeneity
+	std::cout << homogeneity * 100 << "% homogeneity" << std::endl;
 }
